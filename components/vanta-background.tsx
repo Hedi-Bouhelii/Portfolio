@@ -16,9 +16,20 @@ export default function VantaBackground() {
   const [scriptsLoaded, setScriptsLoaded] = useState(false)
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
+  // Check if mobile on mount and resize
   useEffect(() => {
     setMounted(true)
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Load scripts dynamically
@@ -63,23 +74,38 @@ export default function VantaBackground() {
 
     const isDark = resolvedTheme === 'dark'
 
+    // Mobile-optimized settings
+    const mobileSettings = {
+      points: 4,              // Fewer points on mobile
+      maxDistance: 30,        // Increased distance between connections
+      spacing: 25,            // More spacing between points
+      showDots: false,        // Hide dots on mobile for cleaner look
+      color: isDark ? 0x3b82f6 : 0x2563eb,
+      backgroundColor: isDark ? 0x0a0f1a : 0xf0f4f8,
+    }
+
+    // Desktop settings
+    const desktopSettings = {
+      points: 8,
+      maxDistance: 25,
+      spacing: 18,
+      showDots: true,
+      color: isDark ? 0x3b82f6 : 0x2563eb,
+      backgroundColor: isDark ? 0x0a0f1a : 0xf0f4f8,
+    }
+
     try {
       vantaEffect.current = window.VANTA.NET({
         el: vantaRef.current,
         THREE: window.THREE,
-        mouseControls: true,
+        mouseControls: !isMobile, // Disable mouse controls on mobile
         touchControls: true,
         gyroControls: false,
         minHeight: 200,
         minWidth: 200,
         scale: 1.0,
         scaleMobile: 1.0,
-        color: isDark ? 0x3b82f6 : 0x2563eb,
-        backgroundColor: isDark ? 0x0a0f1a : 0xf0f4f8,
-        points: 8,
-        maxDistance: 25,
-        spacing: 18,
-        showDots: true,
+        ...(isMobile ? mobileSettings : desktopSettings),
       })
     } catch (err) {
       console.error('[Vanta] Failed to initialize:', err)
@@ -91,7 +117,7 @@ export default function VantaBackground() {
         vantaEffect.current = null
       }
     }
-  }, [scriptsLoaded, mounted, resolvedTheme])
+  }, [scriptsLoaded, mounted, resolvedTheme, isMobile])
 
   return (
     <div
