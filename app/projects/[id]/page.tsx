@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowLeft, ExternalLink, Github, Calendar, Clock, User } from 'lucide-react'
 import { getProjectById, getAllProjectIds } from '@/lib/projects'
+import ProjectStatusBadge from '@/components/project-status-badge'
 
 // Generate static params for all projects
 export async function generateStaticParams() {
@@ -60,6 +62,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
             {/* Left: Info */}
             <div>
               <div className="flex flex-wrap gap-2 mb-4">
+                <ProjectStatusBadge status={project.status} />
                 {project.tags.map((tag, i) => (
                   <span
                     key={i}
@@ -131,11 +134,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
             </div>
 
             {/* Right: Main Image */}
-            <div className="rounded-xl overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
-              <img
+            <div className="relative aspect-[8/5] rounded-xl overflow-hidden border border-border/50 shadow-2xl shadow-primary/5">
+              <Image
                 src={project.image}
                 alt={project.title}
-                className="w-full h-auto object-cover"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                priority
+                className="object-cover"
               />
             </div>
           </div>
@@ -143,6 +149,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
       </section>
 
       {/* Results Section */}
+      {project.results.length > 0 && (
       <section className="py-12 px-6 section-elevated">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-bold text-foreground mb-8">Key Results</h2>
@@ -161,6 +168,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
       </section>
+      )}
 
       {/* Challenges & Solutions */}
       <section className="py-12 px-6 section-dark">
@@ -231,12 +239,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
               {project.gallery.map((img, i) => (
                 <div
                   key={i}
-                  className="rounded-xl overflow-hidden border border-border/50 shadow-lg"
+                  className="relative h-64 rounded-xl overflow-hidden border border-border/50 shadow-lg"
                 >
-                  <img
+                  <Image
                     src={img}
                     alt={`${project.title} screenshot ${i + 1}`}
-                    className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               ))}
