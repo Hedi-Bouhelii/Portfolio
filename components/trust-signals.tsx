@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 
 const technologies = [
   {
@@ -128,11 +129,14 @@ export default function TrustSignals() {
                 key={`${tech.name}-${index}`}
                 className="flex-shrink-0 flex flex-col items-center justify-center mx-6 md:mx-10 group cursor-pointer"
               >
-                <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-2xl bg-card/40 backdrop-blur-sm p-3 md:p-4 hover:bg-card/70 hover:scale-110 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                  <img
+                <div className="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-2xl bg-card/40 backdrop-blur-sm p-3 md:p-4 hover:bg-card/70 hover:scale-110 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+                  <Image
                     src={tech.logo}
                     alt={tech.name}
-                    className="w-full h-full object-contain filter dark:brightness-100 brightness-90 group-hover:brightness-110 transition-all duration-300"
+                    fill
+                    unoptimized
+                    sizes="80px"
+                    className="object-contain filter dark:brightness-100 brightness-90 group-hover:brightness-110 transition-all duration-300 p-3 md:p-4"
                     loading="lazy"
                   />
                 </div>

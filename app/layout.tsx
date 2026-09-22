@@ -16,10 +16,31 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
 })
 
+const siteUrl = 'https://hedi-bouheli.vercel.app'
+const title = 'Hedi Bouheli | Full-Stack Developer & Big Data Engineer'
+const description =
+  'Professional portfolio of Hedi Bouheli - Full-Stack Developer and Big Data Engineer specializing in modern web applications, AI solutions, and cloud infrastructure.'
+
 export const metadata: Metadata = {
-  title: 'Hedi Bouheli | Full-Stack Developer & Big Data Engineer',
-  description: 'Professional portfolio of Hedi Bouheli - Full-Stack Developer and Big Data Engineer specializing in modern web applications, AI solutions, and cloud infrastructure.',
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
   keywords: 'Hedi Bouheli, Full-Stack Developer, Big Data Engineer, AI, Azure, React, Node.js, Portfolio',
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: 'Hedi Bouheli',
+    images: [{ url: '/Hedi-Bouheli.png', width: 1200, height: 1200, alt: 'Hedi Bouheli' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: ['/Hedi-Bouheli.png'],
+  },
 }
 
 export default function RootLayout({
