@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 
 export default function Hero() {
   const [isVisible, setIsVisible] = useState(false)
@@ -79,13 +78,10 @@ export default function Hero() {
 
               {/* Profile Picture Frame - No border */}
               <div className="relative w-full h-full rounded-3xl overflow-hidden mb-12">
-                <Image
+                <img
                   src="/Hedi-Bouheli.png"
                   alt="Hedi Bouheli"
-                  fill
-                  sizes="500px"
-                  priority
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent"></div>
